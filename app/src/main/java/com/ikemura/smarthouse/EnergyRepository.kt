@@ -32,3 +32,8 @@ class EnergyRepository {
         private val TAG = EnergyRepository::class.java.simpleName
     }
 }
+
+data class Energies(
+    val date: String,
+    val electric: String
+)
