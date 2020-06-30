@@ -1,6 +1,7 @@
 package com.ikemura.smarthouse
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -18,8 +19,11 @@ class EnergyRepository {
     fun load() {
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val value = snapshot.value as HashMap<String, String>
-                Log.d(TAG, value.toString())
+                val snapshotValue: HashMap<String, String> = snapshot.value as HashMap<String, String>
+                snapshotValue.forEach { (key, value) ->
+                    Log.d(TAG, "key:$key, value:$value")
+                }
+                val energies: List<Energy> = snapshotValue.map { Energy(date = it.key, electric = it.value) }.toList()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -33,7 +37,7 @@ class EnergyRepository {
     }
 }
 
-data class Energies(
+data class Energy(
     val date: String,
     val electric: String
 )
