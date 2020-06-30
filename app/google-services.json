@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1055335458778",
+    "firebase_url": "https://newagent-eeca2.firebaseio.com",
+    "project_id": "newagent-eeca2",
+    "storage_bucket": "newagent-eeca2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055335458778:android:9e87f2520177ff73a5c2e3",
+        "android_client_info": {
+          "package_name": "com.ikemura.android_kotlin_lab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055335458778-d61u88qnhjn9ncbnkgl33272lkkbun5b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwYnUki2fthRPhEgJa4zczvyJKmS-QapY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055335458778-6l5rso0hve7e1jt445srish84n4pv03h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055335458778:android:12190039e7c6090da5c2e3",
+        "android_client_info": {
+          "package_name": "com.ikemura.smarthouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055335458778-d61u88qnhjn9ncbnkgl33272lkkbun5b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwYnUki2fthRPhEgJa4zczvyJKmS-QapY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055335458778-6l5rso0hve7e1jt445srish84n4pv03h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
