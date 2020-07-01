@@ -85,6 +85,9 @@ class MainActivity : AppCompatActivity() {
     private fun load() {
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.value == null) {
+                    return
+                }
                 val snapshotValue: HashMap<String, String> = snapshot.value as HashMap<String, String>
                 val energies: List<Energy> = snapshotValue.map { Energy(date = it.key, electric = it.value) }.toList()
                 bindToNowEnergyView(energies.first())
@@ -105,8 +108,10 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, energies.toString())
         val entries = energies.mapIndexed { i, energy ->
             Entry(i.toFloat(), energy.electric.toFloat())
+        }.also {
+            if (it.size >= 20) it.slice(0..20)
         }
-            .slice(0..20)
+
         Log.d(TAG, energies.size.toString())
 
         val lineDataSet = LineDataSet(entries, "電力").apply {
