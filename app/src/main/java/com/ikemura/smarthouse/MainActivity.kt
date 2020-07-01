@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             setPinchZoom(false)
             setDrawGridBackground(false)
 
-            //データラベルの表示
+            // データラベルの表示
             legend.apply {
                 form = Legend.LegendForm.LINE
                 textSize = 11f
@@ -56,19 +57,20 @@ class MainActivity : AppCompatActivity() {
                 setDrawInside(false)
             }
 
-            //y軸右側の設定
+            // y軸右側の設定
             axisRight.isEnabled = false
 
-            //X軸表示
+            // X軸表示
             xAxis.apply {
                 setDrawLabels(false)
                 // 格子線を表示する
                 setDrawGridLines(false)
             }
 
-            //y軸左側の表示
+            // y軸左側の表示
             axisLeft.apply {
-                textColor = Color.GREEN
+                // y軸の文字色
+                textColor = Color.GRAY
                 // 格子線を表示する
                 setDrawGridLines(false)
             }
@@ -107,7 +109,12 @@ class MainActivity : AppCompatActivity() {
             .slice(0..20)
         Log.d(TAG, energies.size.toString())
 
-        val lineDataSet = LineDataSet(entries, "電力")
+        val lineDataSet = LineDataSet(entries, "電力").apply {
+            // グラフ内の値の丸い点のカラー
+            setCircleColor(ContextCompat.getColor(this@MainActivity, R.color.orange))
+            // グラフ内の点の上の値の文字色
+            valueTextColor = Color.YELLOW
+        }
         val dataSets = ArrayList<ILineDataSet>().apply { add(lineDataSet) }
         val lineData = LineData(dataSets)
         binding.chart.data = lineData
