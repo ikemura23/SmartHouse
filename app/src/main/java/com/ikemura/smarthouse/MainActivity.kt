@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity() {
      * 瞬間電力の表示
      */
     private fun bindToNowEnergyView(energy: Energy) {
-        binding.energy.text = energy.electric
+        binding.energy.text = "${energy.electric} w"
     }
 
     companion object {
