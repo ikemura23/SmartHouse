@@ -1,8 +1,14 @@
 package com.ikemura.smarthouse
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -20,11 +26,53 @@ class MainActivity : AppCompatActivity() {
         // setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         // Firebaseのセットアップ
         setupDatabase()
 
+        // グラフの設定
+        setupChart()
+
         // 取得開始
         load()
+    }
+
+    private fun setupChart() {
+        binding.chart.apply {
+            // setDrawGridBackground(true)
+            description.isEnabled
+            isScaleXEnabled = false
+            setPinchZoom(false)
+            setDrawGridBackground(false)
+
+            //データラベルの表示
+            legend.apply {
+                form = Legend.LegendForm.LINE
+                textSize = 11f
+                textColor = Color.WHITE
+                verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+                horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+                orientation = Legend.LegendOrientation.HORIZONTAL
+                setDrawInside(false)
+            }
+
+            //y軸右側の設定
+            axisRight.isEnabled = false
+
+            //X軸表示
+            xAxis.apply {
+                setDrawLabels(false)
+                // 格子線を表示する
+                setDrawGridLines(false)
+            }
+
+            //y軸左側の表示
+            axisLeft.apply {
+                textColor = Color.GREEN
+                // 格子線を表示する
+                setDrawGridLines(false)
+            }
+        }
     }
 
     private fun setupDatabase() {
@@ -37,8 +85,8 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val snapshotValue: HashMap<String, String> = snapshot.value as HashMap<String, String>
                 val energies: List<Energy> = snapshotValue.map { Energy(date = it.key, electric = it.value) }.toList()
-                Log.d(TAG, energies.toString())
                 bindToNowEnergyView(energies.first())
+                bindToGraph(energies)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -48,6 +96,28 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * データをグラフに表示する
+     */
+    private fun bindToGraph(energies: List<Energy>) {
+        Log.d(TAG, energies.toString())
+        val entries = energies.mapIndexed { i, energy ->
+            Entry(i.toFloat(), energy.electric.toFloat())
+        }
+            .slice(0..20)
+        Log.d(TAG, energies.size.toString())
+
+        val lineDataSet = LineDataSet(entries, "電力")
+        val dataSets = ArrayList<ILineDataSet>().apply { add(lineDataSet) }
+        val lineData = LineData(dataSets)
+        binding.chart.data = lineData
+        binding.chart.notifyDataSetChanged()
+        binding.chart.invalidate()
+    }
+
+    /**
+     * 瞬間電力の表示
+     */
     private fun bindToNowEnergyView(energy: Energy) {
         binding.energy.text = energy.electric
     }
